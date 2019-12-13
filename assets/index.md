@@ -1,21 +1,11 @@
-<!--- Collection name and description -->
-@{{if .Data.Info.Name -}}@
-# @{{ .Data.Info.Name | trim }}@
-@{{ end }}@
-@{{ if .Data.Info.Description }}@
-@{{- .Data.Info.Description -}}@
-@{{ end }}@
-
-<!--- Request items indices -->
-## Indices
-@{{ range $index, $c := .Data.Collections }}@
-* [@{{ $c.Name | trim }}@](#@{{ $c.Name | trim | glink }}@)
-@{{ range $i, $item := $c.Items }}@
-  * [@{{ $item.Name | trim }}@](#@{{ merge $i $item.Name | trim | glink | glinkInc }}@)
-@{{- end }}@
+<!--- Collection name and description -->	
+@{{if .Data.Info.Name -}}@	
+# @{{ .Data.Info.Name | trim }}@	
+@{{ end }}@	
+@{{ if .Data.Info.Description }}@	
+@{{- .Data.Info.Description -}}@	
 @{{ end }}@
 
---------
 <!--- Iterate main collection -->
 
 @{{ range $di, $d := .Data.Collections }}@
@@ -25,13 +15,13 @@
 <!--- Iterate collection items -->
 
 @{{ range $ii, $item := $d.Items }}@
-### @{{ $ii | addOne }}@. @{{ if $item.Name }}@@{{ $item.Name | trim }}@@{{ end }}@
+### @{{ if $item.Name }}@@{{ $item.Name | trim }}@@{{ end }}@
 
 @{{ if $item.Request.Description }}@
 @{{ $item.Request.Description }}@
 @{{ end }}@
 
-***Endpoint:***
+#### @{{ $item.Request.Method | upper }}@
 
 ```bash
 Method: @{{ $item.Request.Method | upper }}@
@@ -41,7 +31,7 @@ URL: @{{ $item.Request.URL.Raw | trimQueryParams}}@
 
 <!--- headers items -->
 @{{ if $item.Request.Headers }}@
-***Headers:***
+#### Headers
 
 <!--- Iterate headers items -->
 | Key | Value | Description |
@@ -56,7 +46,7 @@ URL: @{{ $item.Request.URL.Raw | trimQueryParams}}@
 
 <!--- Query param items -->
 @{{ if $item.Request.URL.Query }}@
-***Query params:***
+#### Query params
 
 <!--- Query param items -->
 | Key | Value | Description |
@@ -69,7 +59,7 @@ URL: @{{ $item.Request.URL.Raw | trimQueryParams}}@
 
 <!--- URL variables items -->
 @{{ if $item.Request.URL.Variables }}@
-***URL variables:***
+#### URL variables
 
 <!--- URL variables items -->
 | Key | Value | Description |
@@ -85,7 +75,7 @@ URL: @{{ $item.Request.URL.Raw | trimQueryParams}}@
 <!--- Raw body data -->
 @{{ if eq $item.Request.Body.Mode "raw"}}@
 @{{ if $item.Request.Body.Raw }}@
-***Body:***
+#### RAW Request body
 
 ```js        
 @{{ $item.Request.Body.Raw }}@
@@ -98,7 +88,7 @@ URL: @{{ $item.Request.URL.Raw | trimQueryParams}}@
 @{{ if eq $item.Request.Body.Mode "formdata"}}@
 <!--- Formdata items -->
 @{{ if $item.Request.Body.FormData }}@
-***Body:***
+#### Formdata Request body
 
 | Key | Value | Description |
 | --- | ------|-------------|
@@ -112,7 +102,7 @@ URL: @{{ $item.Request.URL.Raw | trimQueryParams}}@
 
 <!---x-urlencoded data -->
 @{{ if eq $item.Request.Body.Mode "urlencoded"}}@
-***Body:***
+#### Urlencoded Request body
 
 @{{ if $item.Request.Body.URLEncoded }}@
 | Key | Value | Description |
@@ -129,7 +119,7 @@ URL: @{{ $item.Request.URL.Raw | trimQueryParams}}@
 
 <!--- Items response -->
 @{{ if $item.Responses }}@
-***Responses:***
+#### Responses
 @{{ range $ir, $resp := $item.Responses }}@
 @{{ if $resp.Name }}@
 Status: @{{ $resp.Name }}@ | Code: @{{ $resp.Code }}@
@@ -138,7 +128,7 @@ Status: @{{ $resp.Name }}@ | Code: @{{ $resp.Code }}@
 
 <!--- response headers items -->
 @{{ if $resp.Headers }}@
-***Response Headers:***
+#### Response Headers
 
 <!--- Iterate response headers items -->
 | Key | Value |
@@ -169,7 +159,7 @@ Status: @{{ $resp.Name }}@ | Code: @{{ $resp.Code }}@
 
 <!--- Variables --->
 @{{ if .Data.Variables }}@
-***Available Variables:***
+#### Available Variables
 
 <!--- Iterate variables -->
 | Key | Value | Type |
@@ -184,4 +174,4 @@ Status: @{{ $resp.Name }}@ | Code: @{{ $resp.Code }}@
 
 ---
 [Back to top](#@{{ .Data.Info.Name | trim | glink }}@)
-> Made with &#9829; by [thedevsaddam](https://github.com/thedevsaddam) | Generated at: @{{date_time}}@ by [docgen](https://github.com/thedevsaddam/docgen)
+> Generated at: @{{date_time}}@ by [docgen](https://github.com/gaplo917/docgen)
