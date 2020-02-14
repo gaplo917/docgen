@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"io"
+	"regexp"
 	"sort"
 )
 
@@ -63,21 +64,23 @@ type (
 
 	// Request describes a request
 	Request struct {
-		Method      string   `json:"method"`
-		Headers     []Header `json:"header"`
-		Body        Body     `json:"body"`
-		URL         URL      `json:"url"`
-		Description string   `json:"description"`
+		Method          string   `json:"method"`
+		Headers         []Header `json:"header"`
+		Body            Body     `json:"body"`
+		URL             URL      `json:"url"`
+		Description     string   `json:"description"`
+		BodyDescription string
 	}
 
 	// Response describes a request resposne
 	Response struct {
-		ID      string   `json:"id"`
-		Name    string   `json:"name"`
-		Status  string   `json:"status"`
-		Code    int      `json:"code"`
-		Headers []Header `json:"header"`
-		Body    string   `json:"body"`
+		ID              string   `json:"id"`
+		Name            string   `json:"name"`
+		Status          string   `json:"status"`
+		Code            int      `json:"code"`
+		Headers         []Header `json:"header"`
+		Body            string   `json:"body"`
+		BodyDescription string
 	}
 
 	// Item describes a request item
@@ -197,4 +200,39 @@ func (r *Root) removeEmptyCollections() {
 		}
 	}
 	return
+}
+
+func (item *Item) patchDescriptions() Item {
+	if len(item.Items) > 0 {
+		for itemIndex := range item.Items {
+			item.Items[itemIndex] = item.Items[itemIndex].patchDescriptions()
+		}
+	}
+	requestRe := regexp.MustCompile(`(?im)(?:<!--request-->)((.*\n?)*)<!--request-->`)
+	requestResult := requestRe.FindStringSubmatch(item.Request.Description)
+	if len(requestResult) > 1 {
+		item.Request.BodyDescription = requestResult[1]
+		item.Request.Description = requestRe.ReplaceAllLiteralString(item.Request.Description, "")
+	}
+
+	responseRe := regexp.MustCompile(`(?im)(?:<!--response-->)((.*\n?)*)<!--response-->`)
+	responseResult := responseRe.FindStringSubmatch(item.Request.Description)
+	if len(responseResult) > 1 {
+		item.Request.Description = responseRe.ReplaceAllLiteralString(item.Request.Description, "")
+		for responseIdx := range item.Responses {
+			if item.Responses[responseIdx].Code >= 200 && item.Responses[responseIdx].Code < 300 {
+				item.Responses[responseIdx].BodyDescription = responseResult[1]
+			}
+		}
+	}
+	return *item
+}
+
+func (r *Root) patchDescriptions() {
+	for i := range r.Collections {
+		r.Collections[i].Item = r.Collections[i].Item.patchDescriptions()
+		for j := range r.Collections[i].Items {
+			r.Collections[i].Items[j] = r.Collections[i].Items[j].patchDescriptions()
+		}
+	}
 }

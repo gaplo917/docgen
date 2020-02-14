@@ -70,6 +70,11 @@ URL: @{{ $item.Request.URL.Raw | trimQueryParams}}@
 @{{ end }}@
 <!--- End URL variables items -->
 
+@{{ if $item.Request.BodyDescription }}@
+#### Payload Description
+@{{ $item.Request.BodyDescription }}@
+@{{ end }}@
+
 <!--- Body mode -->
 @{{ if $item.Request.Body.Mode}}@
 <!--- Raw body data -->
@@ -139,6 +144,11 @@ Status: @{{ $resp.Name }}@ | Code: @{{ $resp.Code }}@
 <!--- End Iterate response headers items -->
 
 <!--- End response headers items -->
+@{{ end }}@
+
+@{{ if $resp.BodyDescription }}@
+#### Response Description
+@{{ $resp.BodyDescription }}@
 @{{ end }}@
 
 @{{ if $resp.Body }}@
