@@ -15,19 +15,18 @@
 <!--- Iterate collection items -->
 
 @{{ range $ii, $item := $d.Items }}@
-### @{{ if $item.Name }}@@{{ $item.Name | trim }}@@{{ end }}@
+
+### @{{ if $item.Name }}@@{{ $item.Request.Method | upper }}@ @{{ $item.Name | trim }}@@{{ end }}@
+::: v-pre
 
 @{{ if $item.Request.Description }}@
 @{{ $item.Request.Description }}@
 @{{ end }}@
 
-#### @{{ $item.Request.Method | upper }}@
-
-```bash
-Method: @{{ $item.Request.Method | upper }}@
-Type: @{{ $item.Request.Body.Mode | upper }}@
-URL: @{{ $item.Request.URL.Raw | trimQueryParams}}@
-```
+@{{ if $item.Request.Body.Mode }}@
+Type: `@{{ $item.Request.Body.Mode | upper }}@`
+@{{ end }}@
+URL: `@{{ $item.Request.URL.Raw | trimQueryParams}}@`
 
 <!--- headers items -->
 @{{ if $item.Request.Headers }}@
@@ -157,7 +156,8 @@ Status: @{{ $resp.Name }}@ | Code: @{{ $resp.Code }}@
 ```
 @{{ end }}@
 @{{ end }}@
-
+:::
+---
 <!--- End Items response -->
 @{{ end }}@
 
