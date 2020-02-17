@@ -33,10 +33,10 @@ URL: `@{{ $item.Request.URL.Raw | trimQueryParams}}@`
 #### Headers
 
 <!--- Iterate headers items -->
-| Key | Value | Description |
-| --- | ------|-------------|
+| Key | Description |
+| --- |-------------|
 @{{ range $ih, $h := $item.Request.Headers -}}@
-| @{{ $h.Key }}@ | @{{ $h.Value }}@ | @{{ $h.Description }}@ |
+| @{{ $h.Key }}@ | @{{ $h.Description }}@ |
 @{{ end }}@
 <!--- End Iterate headers items -->
 
@@ -48,10 +48,10 @@ URL: `@{{ $item.Request.URL.Raw | trimQueryParams}}@`
 #### Query params
 
 <!--- Query param items -->
-| Key | Value | Description |
-| --- | ------|-------------|
+| Key | Description |
+| --- |-------------|
 @{{ range $iq, $q := $item.Request.URL.Query -}}@
-| @{{ $q.Key }}@ | @{{ $q.Value }}@ | @{{ $q.Description }}@ |
+| @{{ $q.Key }}@ | @{{ $q.Description }}@ |
 @{{ end }}@
 @{{ end }}@
 <!--- End query param items -->
@@ -61,10 +61,10 @@ URL: `@{{ $item.Request.URL.Raw | trimQueryParams}}@`
 #### URL variables
 
 <!--- URL variables items -->
-| Key | Value | Description |
-| --- | ------|-------------|
+| Key | Description |
+| --- |-------------|
 @{{ range $iq, $q := $item.Request.URL.Variables -}}@
-| @{{ $q.Key }}@ | @{{ $q.Value }}@ | @{{ $q.Description }}@ |
+| @{{ $q.Key }}@ | @{{ $q.Description }}@ |
 @{{ end }}@
 @{{ end }}@
 <!--- End URL variables items -->
@@ -94,10 +94,10 @@ URL: `@{{ $item.Request.URL.Raw | trimQueryParams}}@`
 @{{ if $item.Request.Body.FormData }}@
 #### Formdata Request body
 
-| Key | Value | Description |
-| --- | ------|-------------|
+| Key | Description |
+| --- |-------------|
 @{{ range $if, $f := $item.Request.Body.FormData -}}@
-| @{{ $f.Key }}@ | @{{ $f.Value }}@ | @{{ $f.Description }}@ |
+| @{{ $f.Key }}@ | @{{ $f.Description }}@ |
 @{{ end }}@
 @{{ end }}@
 @{{ end }}@
@@ -109,10 +109,10 @@ URL: `@{{ $item.Request.URL.Raw | trimQueryParams}}@`
 #### Urlencoded Request body
 
 @{{ if $item.Request.Body.URLEncoded }}@
-| Key | Value | Description |
-| --- | ------|-------------|
+| Key | Description |
+| --- |-------------|
 @{{ range $iu, $u := $item.Request.Body.URLEncoded -}}@
-| @{{ $u.Key }}@ | @{{ $u.Value }}@ | @{{ $u.Description }}@ |
+| @{{ $u.Key }}@ | @{{ $u.Description }}@ |
 @{{ end }}@
 @{{ end }}@
 @{{ end }}@
