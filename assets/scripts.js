@@ -11,6 +11,9 @@ $(document).ready(function(){
         	$(this).parent().find(".glyphicon").removeClass("glyphicon-minus").addClass("glyphicon-plus");
         });
 
+        $("table").each(function(){
+          $(this).addClass("table")
+        });
         
         $('.resp-prettyprint').each(function() {
         	var ctx = $(this);

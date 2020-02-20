@@ -111,7 +111,6 @@
                                                     <thead>
                                                         <tr>
                                                             <th>Key</th>
-                                                            <th>Value</th>
                                                             <th>Description</th>
                                                         </tr>
                                                     </thead>
@@ -119,12 +118,15 @@
                                                         @{{ range $ih, $h := $item.Request.Headers }}@
                                                             <tr>
                                                                 <td>@{{ $h.Key }}@</td>
-                                                                <td>@{{ $h.Value }}@</td>
                                                                 <td>@{{ $h.Description | markdown | html }}@</td>
                                                             </tr>
                                                         @{{ end }}@
                                                     </tbody>
                                                 </table>
+                                                @{{ end }}@
+                                                @{{ if $item.Request.BodyDescription }}@
+                                                    <h5 class="label label-danger">Payload Description</h5>
+                                                    @{{ $item.Request.BodyDescription | markdown | html }}@
                                                 @{{ end }}@
                                                 @{{ if $item.Request.URL.Query }}@
                                                     <h5 class="label label-info">Query</h5>
@@ -132,7 +134,6 @@
                                                     <thead>
                                                         <tr>
                                                             <th>Key</th>
-                                                            <th>Value</th>
                                                             <th>Description</th>
                                                         </tr>
                                                     </thead>
@@ -140,7 +141,6 @@
                                                         @{{ range $iq, $q := $item.Request.URL.Query }}@
                                                             <tr>
                                                                 <td>@{{ $q.Key }}@</td>
-                                                                <td>@{{ $q.Value }}@</td>
                                                                 <td>@{{ $q.Description | markdown | html }}@</td>
                                                             </tr>
                                                         @{{ end }}@
@@ -153,7 +153,6 @@
                                                     <thead>
                                                     <tr>
                                                         <th>Key</th>
-                                                        <th>Value</th>
                                                         <th>Description</th>
                                                     </tr>
                                                     </thead>
@@ -161,7 +160,6 @@
                                                     @{{ range $iq, $q := $item.Request.URL.Variables }}@
                                                     <tr>
                                                         <td>@{{ $q.Key }}@</td>
-                                                        <td>@{{ $q.Value }}@</td>
                                                         <td>@{{ $q.Description | markdown | html }}@</td>
                                                     </tr>
                                                     @{{ end }}@
@@ -189,7 +187,6 @@
                                                             <thead>
                                                                 <tr>
                                                                     <th>Key</th>
-                                                                    <th>Value</th>
                                                                     <th>Description</th>
                                                                 </tr>
                                                             </thead>
@@ -197,7 +194,6 @@
                                                                 @{{ range $if, $f := $item.Request.Body.FormData }}@
                                                                 <tr>
                                                                     <td>@{{ $f.Key }}@</td>
-                                                                    <td>@{{ $f.Value }}@</td>
                                                                     <td>@{{ $f.Description | markdown | html }}@</td>
                                                                 </tr>
                                                                 @{{ end }}@
@@ -215,7 +211,6 @@
                                                             <thead>
                                                                 <tr>
                                                                     <th>Key</th>
-                                                                    <th>Value</th>
                                                                     <th>Description</th>
                                                                 </tr>
                                                             </thead>
@@ -223,7 +218,6 @@
                                                                 @{{ range $iu, $u := $item.Request.Body.URLEncoded }}@
                                                                     <tr>
                                                                         <td>@{{ $u.Key }}@</td>
-                                                                        <td>@{{ $u.Value }}@</td>
                                                                         <td>@{{ $u.Description | markdown | html }}@</td>
                                                                     </tr>
                                                                 @{{ end }}@
@@ -241,6 +235,10 @@
                                                             <h6>@{{ $resp.Name }}@&nbsp;|&nbsp;Code: @{{ $resp.Code }}@</h6>
                                                         @{{ end }}@
                                                         @{{ if $resp.Headers }}@
+                                                        @{{ if $resp.BodyDescription }}@
+                                                            <h5 class="label label-danger">Response Description</h5>
+                                                            @{{ $resp.BodyDescription | markdown | html }}@
+                                                        @{{ end }}@
                                                         <h5 class="label label-warning">Response Headers</h5>
                                                         <table class="table table-hover">
                                                             <thead>
@@ -300,7 +298,6 @@
                                   @{{ range $iv, $v := .Data.Variables }}@
                                       <tr>
                                           <td>@{{ $v.Key }}@</td>
-                                          <td>@{{ $v.Value }}@</td>
                                           <td>@{{ $v.Type }}@</td>
                                       </tr>
                                   @{{ end }}@

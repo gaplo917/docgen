@@ -77,7 +77,7 @@ func readJSONtoHTML(str string) *bytes.Buffer {
 	if err = rt.Open(f); err != nil {
 		log.Fatal("parsing json file", err.Error())
 	}
-
+	rt.patchDescriptions()
 	tm := template.New("main")
 	tm.Delims("@{{", "}}@")
 	tm.Funcs(template.FuncMap{
@@ -168,7 +168,7 @@ func readJSONtoMarkdownHTML(str string) *bytes.Buffer {
 	if err = rt.Open(f); err != nil {
 		log.Fatal("parsing json file", err.Error())
 	}
-
+	rt.patchDescriptions()
 	tm := template.New("main")
 	tm.Delims("@{{", "}}@")
 	tm.Funcs(template.FuncMap{
